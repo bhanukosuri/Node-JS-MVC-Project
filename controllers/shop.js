@@ -4,23 +4,25 @@ const db = require('../util/database')
 
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then(products => {
       res.render('shop/product-list', {
-        prods: rows,
+        prods: products,
         pageTitle: 'All Products',
         path: '/products'
-      });
+      })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+    })
 };
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product.findById(prodId)
-    .then(([product]) => {
+    .then(product => {
       res.render('shop/product-detail', {
-        product: product[0],
+        product: product,
         pageTitle: product.title,
         path: '/products'
       });
@@ -29,10 +31,10 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then(products => {
       res.render('shop/index', {
-        prods: rows,
+        prods: products,
         pageTitle: 'Shop',
         path: '/'
       })
